@@ -1,6 +1,10 @@
 {
   "name": "meshblu-wemo-motion",
-  "repository": "octoblu/meshblu-wemo-motion",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/insideGen/meshblu-wemo-motion.git"
+  },
+  "homepage": "https://github.com/insideGen/meshblu-wemo-motion",
   "version": "1.0.0",
   "main": "connector.js",
   "scripts": {
