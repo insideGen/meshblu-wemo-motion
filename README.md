@@ -1,1 +1,1 @@
-# Meshblu connector for Wemo motion sensor #
+Meshblu connector for Wemo motion sensor
