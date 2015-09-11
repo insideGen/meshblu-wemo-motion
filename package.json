@@ -24,6 +24,8 @@
   ],
   "keywords": [
     "meshblu-connector",
-    "gateblu"
+    "gateblu",
+    "wemo",
+    "motion"
   ]
 }
