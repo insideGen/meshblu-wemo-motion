@@ -6,14 +6,14 @@ It's intended to be used with Gateblu, but works great as a standalone applicati
 The options schema and the message schema is auto published to the meshblu device when the plugin starts.
 
 ## Installation ##
-It's recommend to be used with Gateblu, but if you want to run it by itself, you'll need to register a device with Meshblu and create a meshblu.json in the root of the meshblu-wemo directory that looks like the following:
+It's recommend to be used with Gateblu, but if you want to run it by itself, you'll need to register a device with Meshblu and create a meshblu.json in the root of the meshblu-wemo-motion directory that looks like the following:
 
 ```
 {
   "uuid":   "<your meshblu-wemo-motion uuid>",
   "token":  "<your meshblu-wemo-motion token>",
   "server": "meshblu.octoblu.com",
-  "port":   "3000"
+  "port":   "80"
 }
 ```
 
