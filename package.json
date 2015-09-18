@@ -5,7 +5,7 @@
     "url": "https://github.com/insideGen/meshblu-wemo-motion.git"
   },
   "homepage": "https://github.com/insideGen/meshblu-wemo-motion",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "main": "connector.js",
   "scripts": {
     "preinstall": "node -e \"try{require('./skip-install.js')}catch(e){}\"",

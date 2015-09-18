@@ -56,7 +56,7 @@ Plugin.prototype.setOptions = function(options) {
       self.client = self.wemo.client(deviceInfo);
       self.client.on('binaryState', function(value) {
         //console.log('state changed: ', value);
-        self.emit('message', {devices: ['*'], topic: 'state-changed', payload: {value: value}});
+        self.emit('message', {devices: ['*'], topic: 'state-changed', payload: {motion: (value === "1") ? true : false}});
       });
     }
   });
