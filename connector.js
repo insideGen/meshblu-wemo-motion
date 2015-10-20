@@ -1,8 +1,11 @@
 'use strict';
-var Plugin = require('./index').Plugin;
-var util = require('util');
+var Plugin       = require('./index').Plugin;
+var util         = require('util');
 var EventEmitter = require('events').EventEmitter;
-var meshblu = require('meshblu');
+var meshblu      = require('meshblu');
+var packageJSON  = require('./package.json');
+var _            = require('lodash');
+
 var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }
 
 var Connector = function(config){
@@ -14,7 +17,13 @@ var Connector = function(config){
   self.onConfig = bind(self.onConfig, self);
   self.run = bind(self.run, self);
   self.emitError = bind(self.emitError, self);
-  process.on('uncaughtException', self.emitError);
+  if(!process){
+    return;
+  }
+  process.on('uncaughtException', function(error){
+    self.emitError(error);
+    process.exit(1);
+  });
   return self;
 };
 
@@ -60,12 +69,17 @@ Connector.prototype.onReady = function(){
   var self = this;
   self.conx.whoami({uuid: self.config.uuid}, function(device){
     self.plugin.setOptions(device.options || {});
+    var oldRecentVersions = device.recentVersions || [];
+    var recentVersions = _.union(oldRecentVersions, [packageJSON.version]);
     self.conx.update({
-      uuid: self.config.uuid,
-      token: self.config.token,
+      uuid:          self.config.uuid,
+      token:         self.config.token,
       messageSchema: self.plugin.messageSchema,
       optionsSchema: self.plugin.optionsSchema,
-      options: self.plugin.options
+      options:       self.plugin.options,
+      initializing:  false,
+      currentVersion: packageJSON.version,
+      recentVersions: recentVersions
     });
   });
 };
@@ -80,6 +94,11 @@ Connector.prototype.run = function(){
   });
 
   self.plugin.on('error', self.emitError);
+
+  self.plugin.on('update', function(properties){
+    self.emit('update', properties);
+    self.conx.update(properties);
+  });
 
   self.plugin.on('message', function(message){
     self.emit('message.send', message);
