@@ -45,6 +45,7 @@ Plugin.prototype.onConfig = function(device) {
 
 Plugin.prototype.setOptions = function(options) {
   var self = this;
+  debug("setOptions: %j", options);
   self.options = options;
   for(var udnClient in self.wemo._clients) {
     self.wemo._clients[udnClient].removeAllListeners();
@@ -53,17 +54,17 @@ Plugin.prototype.setOptions = function(options) {
   self.client = undefined;
   self.preValue = undefined;
   self.wemo.discover(function(deviceInfo) {
-    //console.log('Device searched: %s', self.options.friendlyName);
-    //console.log('%s: %s', deviceInfo.deviceType.split(':')[3], deviceInfo.friendlyName);
+    debug('Device searched: %s', self.options.friendlyName);
+    debug('%s: %s', deviceInfo.deviceType.split(':')[3], deviceInfo.friendlyName);
     if (deviceInfo.deviceType.split(':')[3] === 'sensor' && deviceInfo.friendlyName === self.options.friendlyName)
     {
-      //console.log('Create WeMo client: %s', deviceInfo.friendlyName);
+      debug('Create WeMo client: %s', deviceInfo.friendlyName);
       self.client = self.wemo.client(deviceInfo);
       self.client.on('binaryState', function(value) {
         value = (value === "1") ? true : false;
         if (self.preValue == undefined || self.preValue != value)
         {
-          //console.log('state changed: ', value);
+          debug('State changed: %s', value);
           self.preValue = value;
           self.emit('message', { "devices": ['*'], "topic": 'state-changed', "payload": { "motion": value } });
         }
